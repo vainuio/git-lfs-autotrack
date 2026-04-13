@@ -119,9 +119,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--max-lines",
         type=int,
-        default=3000,
+        default=10_000,
         metavar="N",
-        help="Line threshold for text files; files above this are moved to LFS (default: 3000).",
+        help="Line threshold for text files; files above this are moved to LFS (default: 10000).",
     )
     parser.add_argument(
         "--max-bytes",

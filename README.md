@@ -4,14 +4,14 @@ A [pre-commit](https://pre-commit.com) hook that automatically moves large files
 
 ## How it works
 
-When a staged file exceeds its threshold the hook:
+When a staged file exceeds its threshold, the hook:
 
 1. Runs `git lfs track <pattern>` (e.g. `*.json`) to add an entry to `.gitattributes`
 2. Unstages the regular blob and re-adds it as an LFS pointer
 3. Stages the updated `.gitattributes`
 4. Exits non-zero to abort the commit
 
-Re-run the commit and it goes through cleanly as an LFS pointer commit.
+Re-run the commit, and it goes through cleanly as an LFS pointer commit.
 
 ## Requirements
 
@@ -57,7 +57,7 @@ hooks:
 
 | Argument | Default | Description |
 |---|---|---|
-| `--max-lines=N` | `1000` | Line threshold for known-text files |
+| `--max-lines=N` | `10000` | Line threshold for known-text files |
 | `--max-bytes=N` | `10485760` (10 MiB) | Byte threshold; applied to all files |
 | `--glob=PATTERN` | *(all files)* | Restrict to files matching this glob (repeatable) |
 
