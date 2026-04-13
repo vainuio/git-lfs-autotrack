@@ -76,6 +76,13 @@ def test_gitattributes_type_rules_no_file(tmp_path, monkeypatch):
 # should_track — extension defaults and .gitattributes override
 # ---------------------------------------------------------------------------
 
+def test_should_track_large_text_single_line(tmp_path):
+    """Text file over max_bytes is tracked even with only one line."""
+    f = tmp_path / "big.json"
+    f.write_bytes(b"x" * 1100)  # 1 line, but 1100 bytes > max_bytes=1000
+    assert should_track(f, max_lines=100, max_bytes=1000) is True
+
+
 def test_should_track_known_binary_extension(tmp_path):
     """Known binary extension (.pdf) uses byte threshold even if content is valid UTF-8."""
     f = tmp_path / "doc.pdf"

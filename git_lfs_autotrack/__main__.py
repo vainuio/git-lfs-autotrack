@@ -2,6 +2,7 @@
 """Automatically track large files in Git LFS when they exceed a threshold."""
 
 import argparse
+import contextlib
 import subprocess
 import sys
 from pathlib import Path
@@ -11,7 +12,7 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 
 _BINARY_SUFFIXES = frozenset({".pdf", ".7z", ".bz2", ".bzip2", ".gz", ".zip"})
-_TEXT_SUFFIXES   = frozenset({".json", ".toml", ".xml", ".yaml", ".yml", ".csv"})
+_TEXT_SUFFIXES   = frozenset({".json", ".toml", ".xml", ".yaml", ".yml", ".csv", ".tsv"})
 
 
 def _gitattributes_type_rules() -> list[tuple[str, bool]]:
@@ -66,28 +67,20 @@ def should_track(
 ) -> bool:
     """Return ``True`` if *path* exceeds its relevant threshold.
 
-    Text files are checked against *max_lines*; binary files against
-    *max_bytes*.  Falls back to a UTF-8 heuristic when the type is unknown.
+    All files are checkd against max_bytes, text (non-binary) files then against max_lines.
     Returns ``False`` if the file cannot be read.
     """
     is_binary = _file_is_binary(path, ga_rules or [])
-    if is_binary is True:
-        try:
-            return path.stat().st_size > max_bytes
-        except OSError:
-            return False
-    if is_binary is False:
-        try:
-            return sum(1 for _ in path.open(encoding="utf-8", errors="replace")) > max_lines
-        except OSError:
-            return False
-    # Unknown type: try UTF-8; fall back to size check if the file is binary.
     try:
-        return sum(1 for _ in path.open(encoding="utf-8")) > max_lines
-    except UnicodeDecodeError:
-        return path.stat().st_size > max_bytes
+        size = path.stat().st_size
     except OSError:
         return False
+    if size > max_bytes:
+        return True
+    if is_binary is False:
+        with contextlib.suppress(OSError):
+            return sum(1 for _ in path.open(encoding="utf-8", errors="replace")) > max_lines
+    return False
 
 
 def lfs_tracked_patterns() -> set[str]:
