@@ -102,8 +102,8 @@ def already_lfs_tracked(path: Path, patterns: set[str]) -> bool:
 
 
 def track_pattern_for(path: Path) -> str:
-    """Return the LFS tracking glob for *path* (extension-based when possible)."""
-    return f"*{path.suffix}" if path.suffix else path.name
+    """Return the LFS tracking pattern for *path* (exact file path)."""
+    return path.as_posix()
 
 
 def lfs_available() -> bool:

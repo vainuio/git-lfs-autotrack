@@ -149,7 +149,7 @@ def test_already_lfs_tracked_empty_patterns():
 # ---------------------------------------------------------------------------
 
 def test_track_pattern_with_extension():
-    assert track_pattern_for(Path("data/big.json")) == "*.json"
+    assert track_pattern_for(Path("data/big.json")) == "data/big.json"
 
 
 def test_track_pattern_no_extension():
@@ -157,7 +157,7 @@ def test_track_pattern_no_extension():
 
 
 def test_track_pattern_nested():
-    assert track_pattern_for(Path("a/b/c.toml")) == "*.toml"
+    assert track_pattern_for(Path("a/b/c.toml")) == "a/b/c.toml"
 
 
 # ---------------------------------------------------------------------------
@@ -205,7 +205,7 @@ def test_main_large_file_is_converted(tmp_path, monkeypatch):
     assert result == 1
     lfs_track_calls = [c for c in run.call_args_list if c.args[0][:3] == ["git", "lfs", "track"]]
     assert len(lfs_track_calls) == 1
-    assert lfs_track_calls[0].args[0][3] == "*.json"
+    assert lfs_track_calls[0].args[0][3] == Path(str(f)).as_posix()
 
 
 def test_main_glob_filter_excludes_file(tmp_path, monkeypatch):
