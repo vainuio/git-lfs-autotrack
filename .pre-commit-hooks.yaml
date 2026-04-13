@@ -9,4 +9,5 @@
     Requires git-lfs to be installed.
   args: [--max-lines=3000]
   pass_filenames: true
+  require_serial: true
   exclude: '\.(adoc|asm|astro|bash|c|cc|cjs|clj|cljc|cljs|cmake|cr|cs|css|cts|cxx|d|dart|erl|ex|exs|fish|fs|fsi|fsx|go|gql|gradle|graphql|groovy|h|hcl|hh|hpp|hrl|hs|htm|html|hxx|java|jl|js|jsx|kt|kts|less|lhs|lua|m|md|mjs|ml|mli|mm|mts|nim|php|pl|pm|proto|ps1|psd1|psm1|py|pyi|pyx|rb|rs|rst|s|sass|scala|scss|sh|sql|svelte|swift|tcsh|tex|tf|thrift|ts|tsx|txt|v|vhd|vhdl|vue|zig|zsh)$'

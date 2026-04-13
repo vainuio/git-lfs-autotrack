@@ -180,8 +180,8 @@ def main(argv: list[str] | None = None) -> int:
         try:
             subprocess.run(["git", "lfs", "track", pattern], check=True, capture_output=True)
             # Unstage the regular blob and re-add as an LFS pointer.
-            subprocess.run(["git", "rm", "--cached", "--quiet", path], check=True, capture_output=True)
-            subprocess.run(["git", "add", path], check=True, capture_output=True)
+            subprocess.run(["git", "rm", "--cached", "--quiet", str(path)], check=True, capture_output=True)
+            subprocess.run(["git", "add", str(path)], check=True, capture_output=True)
             converted.append(path)
             print(f"  {path}  →  tracked as {pattern!r}")
         except subprocess.CalledProcessError as exc:
