@@ -1,0 +1,21 @@
+- id: git-lfs-autotrack
+  name: Auto-track large files with Git LFS
+  language: python
+  entry: git-lfs-autotrack
+  description: >
+    Automatically moves files exceeding a line threshold to Git LFS tracking.
+    Configure threshold with --max-lines (default: 1000).
+    Optionally restrict eligible paths with --glob PATTERN (repeatable).
+    Requires git-lfs to be installed.
+  args: [--max-lines=1000]
+  pass_filenames: true
+  # types_or / files / exclude are configured in .pre-commit-config.yaml.
+  #
+  # Minimal example:
+  #   hooks:
+  #     - id: git-lfs-autotrack
+  #       types_or: [json, toml]
+  #       args:
+  #         - --max-lines=3000
+  #         - --glob=**/_data/*
+  #         - --glob=**/data/*
